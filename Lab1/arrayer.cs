@@ -6,14 +6,14 @@ namespace Lab1
     public class arrayer
     {
         private double[] arr;
-        arrayer(double[] arr)
+        public arrayer(double[] arr)
         {
             this.arr = arr;
         }
         int[] mm = new int[] { 0, 0 };
         public double Product { get; private set; }
         public double Sum { get; private set; }
-        public void arrayThingify(double[] arr, string yo)
+        public void arrayThingify()
         {
             Sum = arr[0];
             Product = 1;

@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.Collections;
+using System.Collections.Generic;
 using static System.Math;
 namespace Lab1
 {
@@ -23,13 +24,32 @@ namespace Lab1
             double[] d = new double[s.Length];
             for (int i = 0; i < s.Length; i++)
             {
-                bool r = Double.TryParse(s[i], out d[i]);
+                bool r = double.TryParse(s[i], out d[i]);
                 if (!r)
                 {
                     Console.WriteLine("Invalid format! Try entering array again:");
                     i = -1;
                     s = Console.ReadLine().Split(" ");
                     d = new double[s.Length];
+                }
+
+            }
+            return d;
+        }
+        public static int[] read1DArrayOfInt()
+        {
+            Console.WriteLine("Please enter the spaced out array");
+            string[] s = Console.ReadLine().Split(" ");
+            int[] d = new int[s.Length];
+            for (int i = 0; i < s.Length; i++)
+            {
+                bool r = int.TryParse(s[i], out d[i]);
+                if (!r)
+                {
+                    Console.WriteLine("Invalid format! Try entering array again:");
+                    i = -1;
+                    s = Console.ReadLine().Split(" ");
+                    d = new int[s.Length];
                 }
 
             }
@@ -117,18 +137,77 @@ namespace Lab1
 
         static void Main(string[] args)
         {
+            graph_function();
+                                    // piece-wise function
+
+            hit_function();
+                                // hit function
+
+
+
             Console.WriteLine("Morning! What is the width of your array?");
             int width = (int)readDoubleInput();
             Console.WriteLine("Enter every row line by line");
-            double[][] array = new double[width][];
+            int[][] array = new int[width][];
+            int counter = 0;                    //number of empty rows
             for (int i = 0; i < width; i++)
             {
-                array[i] = read1DArray();
+                array[i] = read1DArrayOfInt();
+                if (array[i].Length == 0)
+                {
+                    counter++;
+                }
+
             }
 
-            //Strings s = new Strings();
-            //s.loadStringy();
-            //Console.WriteLine(s.fix_up(s.reverse(s.split())));
+            //int[] array = { 10, 5, 10, 2, 2, 3, 4, 5, 5, 6, 7, 8, 9, 11, 12, 12 };
+            var dict = new Dictionary<int, int>();
+            for (int i = 0; i < array.Length; i++)
+            {
+                foreach (var value in array[i])
+                {
+                    if (dict.ContainsKey(value))
+                        dict[value]++;
+                    else
+                        dict[value] = 1;
+                }
+
+            }
+
+            int mv=-1;
+            foreach (var pair in dict)
+            {
+                if (pair.Value > 1)
+                {
+                    mv = pair.Key;
+                    break;
+                }
+            }
+            foreach (var pair in dict)
+            {
+                if (pair.Value > 1)
+                {
+                    if (pair.Key > mv)
+                    {
+                        mv = pair.Key;
+                    }
+
+                }
+            }                           // mv - max recurring value
+                                                                            // Arrays task 2
+
+            double[] arr = read1DArray();
+            arrayer Arr = new arrayer(arr);
+            Arr.arrayThingify(); // neccessary to achieve desired results
+            Console.WriteLine(Arr.Product); // product of inbetween numbers
+            Console.WriteLine(Arr.Sum); // sum of required numbers
+            Arr.sort();
+                                                                           // Arrays task 1
+
+            Strings s = new Strings();
+            s.loadStringy();
+            Console.WriteLine(s.fix_up(s.reverse(s.split()))); // prints reversed sentences
+                                                                           //Strings task
         }
     }
 }
