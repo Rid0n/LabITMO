@@ -6,43 +6,59 @@ namespace Lab1
 {
     class Strings
     {
-        public string data;
-        public void loadStringy()
+        private string data;
+        public Strings()
+        {
+            loadStringie();
+            printReversed();  
+        }
+        public void loadStringie()
         {
             Console.WriteLine("Please specify file path:");
-            string path = Console.ReadLine();
-            //string path = @"C:\Users\space\OneDrive\Рабочий стол\Лабы\hey.txt";
+            //string path = Console.ReadLine();
+            string path = @"C:\Users\space\OneDrive\Рабочий стол\Лабы\hey.txt";
             data = File.ReadAllText(path);
         }
-        public string[] split()
-        { 
-            string[] sentences;
-            sentences = data.Split('.');
-            if (sentences.Length > 0)
+        public string[] Split()
+        {
+            
+            int numberOfSentences = 0;
+            foreach (char item in data)
             {
-                for (int i = 1; i < sentences.Length; i++)
-                {
-                    try
-                    {
-                        if (sentences[i].Length > 0)
-                        {
-                            sentences[i] = sentences[i].Remove(0, 1);
-                        }
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        Console.WriteLine("wham!" + sentences[i] + "yopa");
-                    }
+                if (item == '?' || item == '!' || item == '.'){
+                    numberOfSentences++;
                 }
-
-                return sentences;
             }
-            else
-            {
-                return new string[] {"what"};
-            }
+            int p = 0;
+            string[] sentences = new string[numberOfSentences];
+            for (int i = 0; i < data.Length; i++)
+                switch (data[i])
+                {
+                    case '.':
+                        string cutData = data.Remove(i) + '.';
+                        sentences[p] = cutData[0] == ' ' ? cutData.Substring(1) : cutData;
+                        data = data.Substring(i + 1);
+                        i = 0;
+                        p++;
+                        break;
+                    case '!':
+                        cutData = data.Remove(i) + '!';
+                        sentences[p] = cutData[0] == ' ' ? cutData.Substring(1) : cutData;
+                        data = data.Substring(i+1);
+                        i = 0;
+                        p++;
+                        break;
+                    case '?':
+                        cutData = data.Remove(i) + '?';
+                        sentences[p] =( cutData[0] == ' ' ? cutData.Substring(1): cutData);
+                        data = data.Substring(i + 1);
+                        i = 0;
+                        p++;
+                        break;
+                }
+            return sentences;
         }
-        public string[] reverse(string[] array)
+        public string[] Reverse(string[] array)
         {
             for (int i = 0; i < array.Length/2; i++)
             {
@@ -52,17 +68,20 @@ namespace Lab1
             }
             return array;
         }
-        public string fix_up(string[] array)
+       
+        public void printReversed()
         {
-            string s = "";
-            foreach (string item in array)
+            foreach (string item in Reverse(Split()))
             {
-                if (item != "")
-                {
-                    s += item + ". ";
-                }
+                Console.WriteLine(item);
             }
-            return s;
+        }
+        public void printReversed(string[] str)
+        {
+            foreach (string item in str)
+            {
+                Console.WriteLine(item);
+            }
         }
     }
 }
