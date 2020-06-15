@@ -20,30 +20,37 @@ namespace Lab1
             return input;
         }
         
-        public static int[] Read1DArrayOfInt()
+        public static int[] Read1DArrayOfInt(int columns)
         {
             Console.WriteLine("Please enter array elements separated by a space");
             string[] s = Console.ReadLine().Split(" ");
+            bool flag = s.Length == columns;
+            while (!flag) {
+                Console.WriteLine("Number of elements does not equal the number of columns, try again.");
+                Console.WriteLine("Please enter array elements separated by a space");
+                s = Console.ReadLine().Split(" ");
+                flag = s.Length == columns;
+            }
+            
             int[] d = new int[s.Length];
             for (int i = 0; i < s.Length; i++)
             {
                 bool r = int.TryParse(s[i], out d[i]);
-                if (!r)
+                while (!r)
                 {
-                    Console.WriteLine("Invalid format! Try entering array again:");
-                    i = -1;
-                    s = Console.ReadLine().Split(" ");
-                    d = new int[s.Length];
+                    Console.WriteLine("{0} is not an integer, please reenter it.",s[i]);
+                    r = int.TryParse(Console.ReadLine(), out d[i]);
                 }
 
             }
             return d;
+
+            
             
             
         }
         public int GetMaxRecurringNumber()
         {
-            //Dictionary<int,int> dict = new Dictionary<int, int>();
             for (int i = 0; i < array.Length; i++)
             {
                 foreach (var value in array[i])
@@ -67,6 +74,7 @@ namespace Lab1
             }
             foreach (var pair in dict)
             {
+                //Console.WriteLine("Num {0}, appearances {1}" , pair.Key,pair.Value);
                 if (pair.Value > 1)
                 {
                     if (pair.Key > mv)
@@ -80,13 +88,15 @@ namespace Lab1
         }
         public int[][] Read2DArray()
         {
-            Console.WriteLine("Morning! What is number of rows your array has?");
+            Console.WriteLine("What is the number of rows of your array?");
             int width = ReadIntInput();
+            Console.WriteLine("the number of columns?");
+            int columns = ReadIntInput();
             Console.WriteLine("Enter every row one by one");
             array = new int[width][];
             for (int i = 0; i < array.Length; i++)
             {
-                array[i] = Read1DArrayOfInt();
+                array[i] = Read1DArrayOfInt(columns);
             }
             return array;
         }
@@ -118,7 +128,7 @@ namespace Lab1
             int MRN = GetMaxRecurringNumber();
             if (MRN != -1)
             {
-                Console.WriteLine("Largest number appearing more than once: {0}", GetMaxRecurringNumber());
+                Console.WriteLine("Largest number appearing more than once: {0}", MRN);
             }
             else
             {
